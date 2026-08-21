@@ -1,21 +1,43 @@
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SUPABASE_FUNCTIONS_URL } from "@/lib/supabase-urls";
 import { sendChatMessage } from "@/lib/chat.functions";
 
-type ChatMessage = { role: "user" | "assistant"; content: string };
+export type ChatMetadata = {
+  client_id?: string;
+  origin?: string;
+  page_url?: string;
+  page_title?: string;
+  referrer?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+};
+
+type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+  assistant_message_id?: string | null;
+  language?: string | null;
+  rating?: 1 | -1 | null;
+};
 
 const storageKey = (widgetKey: string) => `handwerkai_chat_${widgetKey}`;
 
 export function ChatWidget({
   widgetKey,
   welcomeMessage,
+  metadata,
 }: {
   widgetKey: string;
   welcomeMessage?: string | null;
+  metadata?: ChatMetadata;
 }) {
   const send = useServerFn(sendChatMessage);
   const [input, setInput] = useState("");
@@ -49,6 +71,7 @@ export function ChatWidget({
           widget_key: widgetKey,
           message: text,
           ...(conversationId.current ? { conversation_id: conversationId.current } : {}),
+          ...(metadata ?? {}),
         },
       });
 
@@ -59,12 +82,42 @@ export function ChatWidget({
 
       setMessages((m) => [
         ...m,
-        { role: "assistant", content: result.message || "…" },
+        {
+          role: "assistant",
+          content: result.message || "…",
+          assistant_message_id: result.assistant_message_id,
+          language: result.language,
+          rating: null,
+        },
       ]);
     } catch {
       setError("Die Nachricht konnte nicht gesendet werden. Bitte erneut versuchen.");
     } finally {
       setPending(false);
+    }
+  };
+
+  const rate = async (index: number, rating: 1 | -1) => {
+    const message = messages[index];
+    if (!message?.assistant_message_id || !conversationId.current) return;
+
+    const previous = message.rating ?? null;
+    setMessages((m) => m.map((item, i) => (i === index ? { ...item, rating } : item)));
+
+    try {
+      const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/chat-feedback`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          widget_key: widgetKey,
+          conversation_id: conversationId.current,
+          message_id: message.assistant_message_id,
+          rating,
+        }),
+      });
+      if (!res.ok) throw new Error("feedback failed");
+    } catch {
+      setMessages((m) => m.map((item, i) => (i === index ? { ...item, rating: previous } : item)));
     }
   };
 
@@ -77,15 +130,45 @@ export function ChatWidget({
           </div>
         ) : null}
         {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`max-w-[85%] rounded-lg px-3 py-2 text-xs ${
-              message.role === "user"
-                ? "ml-auto bg-primary text-primary-foreground"
-                : "bg-muted"
-            }`}
-          >
-            {message.content}
+          <div key={index} className="space-y-1">
+            <div
+              className={`max-w-[85%] rounded-lg px-3 py-2 text-xs ${
+                message.role === "user"
+                  ? "ml-auto bg-primary text-primary-foreground"
+                  : "bg-muted"
+              }`}
+            >
+              {message.content}
+            </div>
+            {message.role === "assistant" && message.assistant_message_id ? (
+              <div className="flex items-center gap-2 pl-1">
+                {message.rating ? (
+                  <span className="text-[10px] text-muted-foreground">
+                    Danke für Ihre Rückmeldung.
+                  </span>
+                ) : null}
+                <button
+                  type="button"
+                  aria-label="Hilfreich"
+                  onClick={() => void rate(index, 1)}
+                  className={`rounded p-1 transition-colors hover:bg-muted ${
+                    message.rating === 1 ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  <ThumbsUp className="size-3" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Nicht hilfreich"
+                  onClick={() => void rate(index, -1)}
+                  className={`rounded p-1 transition-colors hover:bg-muted ${
+                    message.rating === -1 ? "text-destructive" : "text-muted-foreground"
+                  }`}
+                >
+                  <ThumbsDown className="size-3" />
+                </button>
+              </div>
+            ) : null}
           </div>
         ))}
         {pending ? (
