@@ -1,23 +1,22 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
-  Bell,
   Bot,
   Building2,
   Calendar,
   LayoutDashboard,
   LogOut,
   MessageSquare,
-  Search,
   Settings,
   Users,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+import { GlobalSearch } from "@/components/global-search";
+import { NotificationsBell } from "@/components/notifications-bell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 
 const navigation = [
@@ -29,6 +28,13 @@ const navigation = [
   { to: "/termine", label: "Termine", icon: Calendar },
   { to: "/einstellungen", label: "Einstellungen", icon: Settings },
 ] as const;
+
+const navigationSections = [
+  { label: "Übersicht", items: navigation.slice(0, 1) },
+  { label: "Kundenkontakt", items: navigation.slice(3, 6) },
+  { label: "Konfiguration", items: [navigation[1], navigation[2], navigation[6]] },
+] as const;
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
