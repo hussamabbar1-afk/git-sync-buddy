@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bot, Check, Code2, Globe, Loader2 } from "lucide-react";
+import { Bot, Check, Globe, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell, PageHeader } from "@/components/app-shell";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { ChatWidget } from "@/components/chat-widget";
+import { WidgetSettingsCard } from "@/components/widget-settings-card";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/ki-mitarbeiter")({
@@ -75,7 +74,6 @@ function AiEmployeePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [noCompany, setNoCompany] = useState(false);
   const [agentId, setAgentId] = useState<string | null>(null);
-  const [widgetKey, setWidgetKey] = useState<string | null>(null);
   const [form, setForm] = useState<AgentForm>(emptyForm);
 
   const set = <K extends keyof AgentForm>(key: K, value: AgentForm[K]) =>
@@ -134,7 +132,6 @@ function AiEmployeePage() {
 
       if (agent) {
         setAgentId(agent.id);
-        setWidgetKey(agent.widget_key ?? null);
         setForm({
           name: agent.name ?? "",
           description: agent.description ?? "",
@@ -401,43 +398,28 @@ function AiEmployeePage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Chat-Widget</CardTitle>
-              <CardDescription>Einbindung auf Ihrer Website.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Badge variant="secondary">
-                {widgetKey ? "Bereit" : "Noch nicht eingebunden"}
-              </Badge>
-              <pre className="overflow-x-auto rounded-md bg-muted p-3 text-xs">
-                {`<script src="https://cdn.handwerkai.de/widget.js"
-  data-betrieb="${widgetKey ?? "ihr-betrieb"}"></script>`}
-              </pre>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  if (widgetKey) {
-                    void navigator.clipboard.writeText(
-                      `<script src="https://cdn.handwerkai.de/widget.js" data-betrieb="${widgetKey}"></script>`,
-                    );
-                  }
-                }}
-              >
-                <Code2 className="size-4" /> Code kopieren
-              </Button>
-              {widgetKey ? (
-                <ChatWidget widgetKey={widgetKey} welcomeMessage={form.welcome_message} />
-              ) : (
+          {agentId ? null : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Chat-Widget</CardTitle>
+                <CardDescription>Einbindung auf Ihrer Website.</CardDescription>
+              </CardHeader>
+              <CardContent>
                 <p className="text-xs text-muted-foreground">
-                  Erstellen Sie zuerst den KI-Mitarbeiter, um den Chat zu testen.
+                  Erstellen Sie zuerst den KI-Mitarbeiter, um das Chat-Widget einzurichten.
                 </p>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
+
+      {agentId ? (
+        <div className="mt-4">
+          <WidgetSettingsCard agentId={agentId} welcomeMessage={form.welcome_message} />
+        </div>
+      ) : null}
+
 
       <Card className="mt-4">
         <CardHeader>

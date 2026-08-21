@@ -1,23 +1,22 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
-  Bell,
   Bot,
   Building2,
   Calendar,
   LayoutDashboard,
   LogOut,
   MessageSquare,
-  Search,
   Settings,
   Users,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+import { GlobalSearch } from "@/components/global-search";
+import { NotificationsBell } from "@/components/notifications-bell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 
 const navigation = [
@@ -29,6 +28,13 @@ const navigation = [
   { to: "/termine", label: "Termine", icon: Calendar },
   { to: "/einstellungen", label: "Einstellungen", icon: Settings },
 ] as const;
+
+const navigationSections = [
+  { label: "Übersicht", items: navigation.slice(0, 1) },
+  { label: "Kundenkontakt", items: navigation.slice(3, 6) },
+  { label: "Konfiguration", items: [navigation[1], navigation[2], navigation[6]] },
+] as const;
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -58,42 +64,40 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="font-display text-lg font-semibold tracking-tight">HandwerkAI</span>
         </div>
 
-        <nav className="flex-1 space-y-1 p-3">
-          {navigation.map((item) => {
-            const active = pathname.startsWith(item.to);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
-                }`}
-              >
-                <item.icon className="size-4" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 space-y-4 p-3">
+          {navigationSections.map((section) => (
+            <div key={section.label} className="space-y-1">
+              <p className="px-3 pb-1 text-[10px] font-semibold tracking-wider text-sidebar-foreground/50 uppercase">
+                {section.label}
+              </p>
+              {section.items.map((item) => {
+                const active = pathname.startsWith(item.to);
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                      active
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                        : "text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
+                    }`}
+                  >
+                    <item.icon className="size-4" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
-
-        <div className="border-t border-sidebar-border p-4 text-xs text-sidebar-foreground/70">
-          <p className="font-medium text-sidebar-foreground">Tarif: Professional</p>
-          <p className="mt-1">312 von 1.000 Gesprächen genutzt</p>
-        </div>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-10 flex h-16 items-center gap-3 border-b bg-card/90 px-4 backdrop-blur lg:px-8">
-          <div className="relative hidden max-w-sm flex-1 md:block">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Kunden, Leads oder Gespräche suchen …" className="pl-9" />
-          </div>
+          <GlobalSearch />
           <div className="ml-auto flex items-center gap-3">
-            <Button variant="ghost" size="icon" aria-label="Benachrichtigungen">
-              <Bell className="size-4" />
-            </Button>
+            <NotificationsBell />
+
             <Badge variant="secondary" className="hidden sm:inline-flex">
               KI aktiv
             </Badge>
