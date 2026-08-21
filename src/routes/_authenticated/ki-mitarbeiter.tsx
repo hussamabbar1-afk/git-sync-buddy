@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bot, Check, Code2, Globe, Loader2 } from "lucide-react";
+import { Bot, Check, Globe, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell, PageHeader } from "@/components/app-shell";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -75,7 +74,6 @@ function AiEmployeePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [noCompany, setNoCompany] = useState(false);
   const [agentId, setAgentId] = useState<string | null>(null);
-  const [widgetKey, setWidgetKey] = useState<string | null>(null);
   const [form, setForm] = useState<AgentForm>(emptyForm);
 
   const set = <K extends keyof AgentForm>(key: K, value: AgentForm[K]) =>
@@ -134,7 +132,6 @@ function AiEmployeePage() {
 
       if (agent) {
         setAgentId(agent.id);
-        setWidgetKey(agent.widget_key ?? null);
         setForm({
           name: agent.name ?? "",
           description: agent.description ?? "",
