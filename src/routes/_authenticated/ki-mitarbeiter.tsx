@@ -401,43 +401,28 @@ function AiEmployeePage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Chat-Widget</CardTitle>
-              <CardDescription>Einbindung auf Ihrer Website.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Badge variant="secondary">
-                {widgetKey ? "Bereit" : "Noch nicht eingebunden"}
-              </Badge>
-              <pre className="overflow-x-auto rounded-md bg-muted p-3 text-xs">
-                {`<script src="https://cdn.handwerkai.de/widget.js"
-  data-betrieb="${widgetKey ?? "ihr-betrieb"}"></script>`}
-              </pre>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  if (widgetKey) {
-                    void navigator.clipboard.writeText(
-                      `<script src="https://cdn.handwerkai.de/widget.js" data-betrieb="${widgetKey}"></script>`,
-                    );
-                  }
-                }}
-              >
-                <Code2 className="size-4" /> Code kopieren
-              </Button>
-              {widgetKey ? (
-                <ChatWidget widgetKey={widgetKey} welcomeMessage={form.welcome_message} />
-              ) : (
+          {agentId ? null : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Chat-Widget</CardTitle>
+                <CardDescription>Einbindung auf Ihrer Website.</CardDescription>
+              </CardHeader>
+              <CardContent>
                 <p className="text-xs text-muted-foreground">
-                  Erstellen Sie zuerst den KI-Mitarbeiter, um den Chat zu testen.
+                  Erstellen Sie zuerst den KI-Mitarbeiter, um das Chat-Widget einzurichten.
                 </p>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
+
+      {agentId ? (
+        <div className="mt-4">
+          <WidgetSettingsCard agentId={agentId} welcomeMessage={form.welcome_message} />
+        </div>
+      ) : null}
+
 
       <Card className="mt-4">
         <CardHeader>
