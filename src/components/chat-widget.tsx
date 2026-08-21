@@ -125,17 +125,13 @@ export function ChatWidget({
     <div className="flex h-80 flex-col rounded-md border">
       <div ref={scrollRef} className="flex-1 space-y-2 overflow-y-auto p-3">
         {welcomeMessage ? (
-          <div className="max-w-[85%] rounded-lg bg-muted px-3 py-2 text-xs">
-            {welcomeMessage}
-          </div>
+          <div className="max-w-[85%] rounded-lg bg-muted px-3 py-2 text-xs">{welcomeMessage}</div>
         ) : null}
         {messages.map((message, index) => (
           <div key={index} className="space-y-1">
             <div
               className={`max-w-[85%] rounded-lg px-3 py-2 text-xs ${
-                message.role === "user"
-                  ? "ml-auto bg-primary text-primary-foreground"
-                  : "bg-muted"
+                message.role === "user" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted"
               }`}
             >
               {message.content}
@@ -178,9 +174,7 @@ export function ChatWidget({
         ) : null}
       </div>
 
-      {error ? (
-        <p className="border-t px-3 py-2 text-xs text-destructive">{error}</p>
-      ) : null}
+      {error ? <p className="border-t px-3 py-2 text-xs text-destructive">{error}</p> : null}
 
       <div className="flex gap-2 border-t p-2">
         <Input

@@ -25,17 +25,17 @@ const asString = (value: unknown) =>
 export const Route = createFileRoute("/widget")({
   ssr: false,
   validateSearch: (search: Record<string, unknown>): WidgetSearch => ({
-    key: asString(search['key']),
-    client_id: asString(search['client_id']),
-    origin: asString(search['origin']),
-    page_url: asString(search['page_url']),
-    page_title: asString(search['page_title']),
-    referrer: asString(search['referrer']),
-    utm_source: asString(search['utm_source']),
-    utm_medium: asString(search['utm_medium']),
-    utm_campaign: asString(search['utm_campaign']),
-    utm_content: asString(search['utm_content']),
-    utm_term: asString(search['utm_term']),
+    key: asString(search["key"]),
+    client_id: asString(search["client_id"]),
+    origin: asString(search["origin"]),
+    page_url: asString(search["page_url"]),
+    page_title: asString(search["page_title"]),
+    referrer: asString(search["referrer"]),
+    utm_source: asString(search["utm_source"]),
+    utm_medium: asString(search["utm_medium"]),
+    utm_campaign: asString(search["utm_campaign"]),
+    utm_content: asString(search["utm_content"]),
+    utm_term: asString(search["utm_term"]),
   }),
   head: () => ({
     meta: [
@@ -89,9 +89,10 @@ function WidgetPage() {
         const res = await fetch(
           `${SUPABASE_FUNCTIONS_URL}/widget-config?key=${encodeURIComponent(widgetKey)}`,
         );
-        const body = (await res.json().catch(() => null)) as
-          | { ok?: boolean; config?: WidgetConfig }
-          | null;
+        const body = (await res.json().catch(() => null)) as {
+          ok?: boolean;
+          config?: WidgetConfig;
+        } | null;
 
         if (cancelled) return;
 

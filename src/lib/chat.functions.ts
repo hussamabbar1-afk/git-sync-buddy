@@ -38,14 +38,14 @@ const metadataKeys = [
 export const sendChatMessage = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data }) => {
-    const endpoint = process.env['N8N_CHAT_ENDPOINT'] || FALLBACK_CHAT_ENDPOINT;
+    const endpoint = process.env["N8N_CHAT_ENDPOINT"] || FALLBACK_CHAT_ENDPOINT;
 
     // Live v3 required payload stays exactly as before; optional fields are additive.
     const body: Record<string, string> = {
       widget_key: data.widget_key,
       message: data.message,
     };
-    if (data.conversation_id) body['conversation_id'] = data.conversation_id;
+    if (data.conversation_id) body["conversation_id"] = data.conversation_id;
     for (const key of metadataKeys) {
       const value = data[key];
       if (value) body[key] = value;

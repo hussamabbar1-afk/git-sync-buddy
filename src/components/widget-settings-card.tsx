@@ -85,7 +85,9 @@ export function WidgetSettingsCard({
       supabase.rpc("get_widget_distribution_status"),
       supabase
         .from("widget_display_settings")
-        .select("enabled, position, primary_color, launcher_label, show_branding, mobile_fullscreen")
+        .select(
+          "enabled, position, primary_color, launcher_label, show_branding, mobile_fullscreen",
+        )
         .eq("ai_agent_id", agentId)
         .maybeSingle(),
     ]);
@@ -175,9 +177,7 @@ export function WidgetSettingsCard({
     <Card>
       <CardHeader>
         <CardTitle>Chat-Widget</CardTitle>
-        <CardDescription>
-          Einbindung, Darstellung und Status Ihres Website-Chats.
-        </CardDescription>
+        <CardDescription>Einbindung, Darstellung und Status Ihres Website-Chats.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         {error ? (
@@ -245,10 +245,7 @@ export function WidgetSettingsCard({
                   Steuert, ob der Chat auf Ihrer Website ausgeliefert wird.
                 </p>
               </div>
-              <Switch
-                checked={settings.enabled}
-                onCheckedChange={(v) => set("enabled", v)}
-              />
+              <Switch checked={settings.enabled} onCheckedChange={(v) => set("enabled", v)} />
             </div>
 
             <div className="space-y-2">
@@ -277,7 +274,11 @@ export function WidgetSettingsCard({
                   type="color"
                   aria-label="Farbe wählen"
                   className="h-9 w-10 shrink-0 rounded-md border bg-background"
-                  value={/^#[0-9a-fA-F]{6}$/.test(settings.primary_color) ? settings.primary_color : "#111827"}
+                  value={
+                    /^#[0-9a-fA-F]{6}$/.test(settings.primary_color)
+                      ? settings.primary_color
+                      : "#111827"
+                  }
                   onChange={(e) => set("primary_color", e.target.value)}
                 />
               </div>
@@ -361,10 +362,7 @@ export function WidgetSettingsCard({
             <p className="flex items-center gap-2 text-sm font-medium">
               <Code2 className="size-4" /> Testchat
             </p>
-            <ChatWidget
-              widgetKey={embed.widget_key}
-              welcomeMessage={welcomeMessage ?? null}
-            />
+            <ChatWidget widgetKey={embed.widget_key} welcomeMessage={welcomeMessage ?? null} />
           </div>
         ) : null}
       </CardContent>

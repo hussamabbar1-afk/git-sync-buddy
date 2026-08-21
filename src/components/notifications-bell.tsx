@@ -117,7 +117,11 @@ export function NotificationsBell() {
     const readAt = new Date().toISOString();
     setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: n.read_at ?? readAt } : n)));
     // Only read_at is ever written.
-    await supabase.from("notifications").update({ read_at: readAt }).eq("id", id).is("read_at", null);
+    await supabase
+      .from("notifications")
+      .update({ read_at: readAt })
+      .eq("id", id)
+      .is("read_at", null);
   };
 
   const markAllRead = async () => {
@@ -191,7 +195,9 @@ export function NotificationsBell() {
           <ScrollArea className="max-h-80">
             <ul className="divide-y">
               {items.map((item) => {
-                const clickable = item.entity_type ? Boolean(entityRoutes[item.entity_type]) : false;
+                const clickable = item.entity_type
+                  ? Boolean(entityRoutes[item.entity_type])
+                  : false;
                 return (
                   <li key={item.id}>
                     <div
