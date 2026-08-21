@@ -6,17 +6,17 @@ import { ChatWidget, type ChatMetadata } from "@/components/chat-widget";
 import { SUPABASE_FUNCTIONS_URL } from "@/lib/supabase-urls";
 
 type WidgetSearch = {
-  key?: string;
-  client_id?: string;
-  origin?: string;
-  page_url?: string;
-  page_title?: string;
-  referrer?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
-  utm_content?: string;
-  utm_term?: string;
+  key?: string | undefined;
+  client_id?: string | undefined;
+  origin?: string | undefined;
+  page_url?: string | undefined;
+  page_title?: string | undefined;
+  referrer?: string | undefined;
+  utm_source?: string | undefined;
+  utm_medium?: string | undefined;
+  utm_campaign?: string | undefined;
+  utm_content?: string | undefined;
+  utm_term?: string | undefined;
 };
 
 const asString = (value: unknown) =>

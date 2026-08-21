@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegistrierenRouteImport } from './routes/registrieren'
+import { Route as WidgetRouteImport } from './routes/widget'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedEinrichtungRouteImport } from './routes/_authenticated/einrichtung'
 import { Route as AuthenticatedEinstellungenRouteImport } from './routes/_authenticated/einstellungen'
@@ -39,6 +40,11 @@ const LoginRoute = LoginRouteImport.update({
 const RegistrierenRoute = RegistrierenRouteImport.update({
   id: '/registrieren',
   path: '/registrieren',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WidgetRoute = WidgetRouteImport.update({
+  id: '/widget',
+  path: '/widget',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/registrieren': typeof RegistrierenRoute
+  '/widget': typeof WidgetRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/einrichtung': typeof AuthenticatedEinrichtungRoute
   '/einstellungen': typeof AuthenticatedEinstellungenRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/registrieren': typeof RegistrierenRoute
+  '/widget': typeof WidgetRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/einrichtung': typeof AuthenticatedEinrichtungRoute
   '/einstellungen': typeof AuthenticatedEinstellungenRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/registrieren': typeof RegistrierenRoute
+  '/widget': typeof WidgetRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/einrichtung': typeof AuthenticatedEinrichtungRoute
   '/_authenticated/einstellungen': typeof AuthenticatedEinstellungenRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/registrieren'
+    | '/widget'
     | '/dashboard'
     | '/einrichtung'
     | '/einstellungen'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/registrieren'
+    | '/widget'
     | '/dashboard'
     | '/einrichtung'
     | '/einstellungen'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/registrieren'
+    | '/widget'
     | '/_authenticated/dashboard'
     | '/_authenticated/einrichtung'
     | '/_authenticated/einstellungen'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegistrierenRoute: typeof RegistrierenRoute
+  WidgetRoute: typeof WidgetRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/registrieren'
       fullPath: '/registrieren'
       preLoaderRoute: typeof RegistrierenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/widget': {
+      id: '/widget'
+      path: '/widget'
+      fullPath: '/widget'
+      preLoaderRoute: typeof WidgetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -297,6 +317,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   RegistrierenRoute: RegistrierenRoute,
+  WidgetRoute: WidgetRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
