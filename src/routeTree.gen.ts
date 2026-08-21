@@ -10,33 +10,172 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegistrierenRouteImport } from './routes/registrieren'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedEinrichtungRouteImport } from './routes/_authenticated/einrichtung'
+import { Route as AuthenticatedEinstellungenRouteImport } from './routes/_authenticated/einstellungen'
+import { Route as AuthenticatedKiMitarbeiterRouteImport } from './routes/_authenticated/ki-mitarbeiter'
+import { Route as AuthenticatedKonversationenRouteImport } from './routes/_authenticated/konversationen'
+import { Route as AuthenticatedLeadsRouteImport } from './routes/_authenticated/leads'
+import { Route as AuthenticatedTermineRouteImport } from './routes/_authenticated/termine'
+import { Route as AuthenticatedUnternehmenRouteImport } from './routes/_authenticated/unternehmen'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegistrierenRoute = RegistrierenRouteImport.update({
+  id: '/registrieren',
+  path: '/registrieren',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedEinrichtungRoute =
+  AuthenticatedEinrichtungRouteImport.update({
+    id: '/einrichtung',
+    path: '/einrichtung',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEinstellungenRoute =
+  AuthenticatedEinstellungenRouteImport.update({
+    id: '/einstellungen',
+    path: '/einstellungen',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedKiMitarbeiterRoute =
+  AuthenticatedKiMitarbeiterRouteImport.update({
+    id: '/ki-mitarbeiter',
+    path: '/ki-mitarbeiter',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedKonversationenRoute =
+  AuthenticatedKonversationenRouteImport.update({
+    id: '/konversationen',
+    path: '/konversationen',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLeadsRoute = AuthenticatedLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTermineRoute = AuthenticatedTermineRouteImport.update({
+  id: '/termine',
+  path: '/termine',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUnternehmenRoute =
+  AuthenticatedUnternehmenRouteImport.update({
+    id: '/unternehmen',
+    path: '/unternehmen',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/registrieren': typeof RegistrierenRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/einrichtung': typeof AuthenticatedEinrichtungRoute
+  '/einstellungen': typeof AuthenticatedEinstellungenRoute
+  '/ki-mitarbeiter': typeof AuthenticatedKiMitarbeiterRoute
+  '/konversationen': typeof AuthenticatedKonversationenRoute
+  '/leads': typeof AuthenticatedLeadsRoute
+  '/termine': typeof AuthenticatedTermineRoute
+  '/unternehmen': typeof AuthenticatedUnternehmenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/registrieren': typeof RegistrierenRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/einrichtung': typeof AuthenticatedEinrichtungRoute
+  '/einstellungen': typeof AuthenticatedEinstellungenRoute
+  '/ki-mitarbeiter': typeof AuthenticatedKiMitarbeiterRoute
+  '/konversationen': typeof AuthenticatedKonversationenRoute
+  '/leads': typeof AuthenticatedLeadsRoute
+  '/termine': typeof AuthenticatedTermineRoute
+  '/unternehmen': typeof AuthenticatedUnternehmenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/registrieren': typeof RegistrierenRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/einrichtung': typeof AuthenticatedEinrichtungRoute
+  '/_authenticated/einstellungen': typeof AuthenticatedEinstellungenRoute
+  '/_authenticated/ki-mitarbeiter': typeof AuthenticatedKiMitarbeiterRoute
+  '/_authenticated/konversationen': typeof AuthenticatedKonversationenRoute
+  '/_authenticated/leads': typeof AuthenticatedLeadsRoute
+  '/_authenticated/termine': typeof AuthenticatedTermineRoute
+  '/_authenticated/unternehmen': typeof AuthenticatedUnternehmenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/registrieren'
+    | '/dashboard'
+    | '/einrichtung'
+    | '/einstellungen'
+    | '/ki-mitarbeiter'
+    | '/konversationen'
+    | '/leads'
+    | '/termine'
+    | '/unternehmen'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/registrieren'
+    | '/dashboard'
+    | '/einrichtung'
+    | '/einstellungen'
+    | '/ki-mitarbeiter'
+    | '/konversationen'
+    | '/leads'
+    | '/termine'
+    | '/unternehmen'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/login'
+    | '/registrieren'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/einrichtung'
+    | '/_authenticated/einstellungen'
+    | '/_authenticated/ki-mitarbeiter'
+    | '/_authenticated/konversationen'
+    | '/_authenticated/leads'
+    | '/_authenticated/termine'
+    | '/_authenticated/unternehmen'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegistrierenRoute: typeof RegistrierenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +187,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/registrieren': {
+      id: '/registrieren'
+      path: '/registrieren'
+      fullPath: '/registrieren'
+      preLoaderRoute: typeof RegistrierenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/einrichtung': {
+      id: '/_authenticated/einrichtung'
+      path: '/einrichtung'
+      fullPath: '/einrichtung'
+      preLoaderRoute: typeof AuthenticatedEinrichtungRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/einstellungen': {
+      id: '/_authenticated/einstellungen'
+      path: '/einstellungen'
+      fullPath: '/einstellungen'
+      preLoaderRoute: typeof AuthenticatedEinstellungenRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ki-mitarbeiter': {
+      id: '/_authenticated/ki-mitarbeiter'
+      path: '/ki-mitarbeiter'
+      fullPath: '/ki-mitarbeiter'
+      preLoaderRoute: typeof AuthenticatedKiMitarbeiterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/konversationen': {
+      id: '/_authenticated/konversationen'
+      path: '/konversationen'
+      fullPath: '/konversationen'
+      preLoaderRoute: typeof AuthenticatedKonversationenRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/leads': {
+      id: '/_authenticated/leads'
+      path: '/leads'
+      fullPath: '/leads'
+      preLoaderRoute: typeof AuthenticatedLeadsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/termine': {
+      id: '/_authenticated/termine'
+      path: '/termine'
+      fullPath: '/termine'
+      preLoaderRoute: typeof AuthenticatedTermineRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/unternehmen': {
+      id: '/_authenticated/unternehmen'
+      path: '/unternehmen'
+      fullPath: '/unternehmen'
+      preLoaderRoute: typeof AuthenticatedUnternehmenRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEinrichtungRoute: typeof AuthenticatedEinrichtungRoute
+  AuthenticatedEinstellungenRoute: typeof AuthenticatedEinstellungenRoute
+  AuthenticatedKiMitarbeiterRoute: typeof AuthenticatedKiMitarbeiterRoute
+  AuthenticatedKonversationenRoute: typeof AuthenticatedKonversationenRoute
+  AuthenticatedLeadsRoute: typeof AuthenticatedLeadsRoute
+  AuthenticatedTermineRoute: typeof AuthenticatedTermineRoute
+  AuthenticatedUnternehmenRoute: typeof AuthenticatedUnternehmenRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEinrichtungRoute: AuthenticatedEinrichtungRoute,
+  AuthenticatedEinstellungenRoute: AuthenticatedEinstellungenRoute,
+  AuthenticatedKiMitarbeiterRoute: AuthenticatedKiMitarbeiterRoute,
+  AuthenticatedKonversationenRoute: AuthenticatedKonversationenRoute,
+  AuthenticatedLeadsRoute: AuthenticatedLeadsRoute,
+  AuthenticatedTermineRoute: AuthenticatedTermineRoute,
+  AuthenticatedUnternehmenRoute: AuthenticatedUnternehmenRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegistrierenRoute: RegistrierenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
