@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { ChatWidget } from "@/components/chat-widget";
+import { WidgetSettingsCard } from "@/components/widget-settings-card";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/ki-mitarbeiter")({
